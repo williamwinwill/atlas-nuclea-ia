@@ -1,0 +1,13 @@
+repository: https://github.com/nuclea/atlas-nuclea-ia.git
+default_branch: main
+default_target: kiro
+apm_version: 0.31.0
+tag_format: "{name}--v{version}"
+owners:
+  platform: group:default/platform-ai
+  default: group:default/developer-experience
+shared_validation_paths:
+  - .github/
+  - policies/
+  - tools/
+  - atlas.yml

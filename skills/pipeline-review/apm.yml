@@ -1,0 +1,11 @@
+name: pipeline-review
+version: 1.0.0
+description: Revisa pipelines CI/CD com foco em segurança, reprodutibilidade e confiabilidade
+author: Núclea Platform AI
+license: UNLICENSED
+type: skill
+targets:
+  - kiro
+includes:
+  - .apm/skills/pipeline-review/
+

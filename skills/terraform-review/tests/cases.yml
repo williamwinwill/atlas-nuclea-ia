@@ -1,0 +1,13 @@
+cases:
+  - name: detecta-exposicao-publica
+    input: Um security group passa a aceitar 0.0.0.0/0 na porta administrativa.
+    expect:
+      - Explicar o caminho de exposição e a consequência.
+      - Propor a menor restrição de CIDR ou acesso intermediado.
+      - Não executar apply.
+  - name: evita-falso-positivo-cosmetico
+    input: O diff altera somente formatação produzida por terraform fmt.
+    expect:
+      - Não inventar risco funcional.
+      - Informar que não há achado bloqueante.
+

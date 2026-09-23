@@ -1,0 +1,43 @@
+name: example-service
+version: 1.0.0
+description: Exemplo de consumo do kit Atlas no Kiro com SonarQube MCP
+targets:
+  - kiro
+
+policy:
+  fetch_failure_default: block
+
+dependencies:
+  apm:
+    - git: https://github.com/nuclea/atlas-nuclea-ia.git
+      path: kits/all
+      ref: atlas-all--v1.0.0
+
+  mcp:
+    - name: atlas-sonarqube
+      registry: false
+      transport: stdio
+      command: docker
+      args:
+        - run
+        - --rm
+        - -i
+        - --init
+        - -e
+        - SONARQUBE_TOKEN
+        - -e
+        - SONARQUBE_URL
+        - -e
+        - SONARQUBE_PROJECT_KEY
+        - -e
+        - SONARQUBE_READ_ONLY
+        - -e
+        - SONARQUBE_TOOLSETS
+        - sonarsource/sonarqube-mcp:1.27.0.4335
+      env:
+        SONARQUBE_TOKEN: "${SONARQUBE_TOKEN}"
+        SONARQUBE_URL: "${SONARQUBE_URL}"
+        SONARQUBE_PROJECT_KEY: "${SONARQUBE_PROJECT_KEY}"
+        SONARQUBE_READ_ONLY: "true"
+        SONARQUBE_TOOLSETS: "issues,rules,quality-gates,measures"
+

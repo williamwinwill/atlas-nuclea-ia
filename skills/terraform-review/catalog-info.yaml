@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: atlas-skill-terraform-review
+  description: Skill oficial para revisão de Terraform
+  annotations:
+    atlas.nuclea.io/package-path: skills/terraform-review
+    atlas.nuclea.io/package-version: 1.0.0
+    atlas.nuclea.io/release-tag: terraform-review--v1.0.0
+spec:
+  type: ai-skill
+  lifecycle: production
+  owner: group:default/platform-ai
+

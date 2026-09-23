@@ -1,0 +1,39 @@
+name: Atlas AI baseline
+version: "1.0.0"
+enforcement: block
+
+dependencies:
+  allow:
+    - "nuclea/atlas-nuclea-ia"
+  deny:
+    - "*/deprecated-*"
+  require_resolution: block
+  require_pinned_constraint: true
+  max_depth: 3
+
+manifest:
+  require_explicit_includes: true
+  scripts: deny
+
+mcp:
+  allow:
+    - atlas-sonarqube
+  transport:
+    allow:
+      - stdio
+      - http
+  self_defined: allow
+  trust_transitive: false
+
+compilation:
+  target:
+    allow:
+      - kiro
+
+security:
+  audit:
+    on_install: block
+    fail_on_drift: true
+  integrity:
+    require_hashes: true
+

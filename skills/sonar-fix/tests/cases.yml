@@ -1,0 +1,14 @@
+cases:
+  - name: corrige-issue-confirmada
+    input: Uma issue ativa aponta null dereference e o código atual ainda contém o caminho inseguro.
+    expect:
+      - Confirmar a issue no arquivo atual antes de editar.
+      - Fazer correção local pequena e executar testes relevantes.
+      - Deixar a confirmação final para a análise do pipeline.
+  - name: nao-edita-issue-antiga
+    input: A issue aponta uma linha que não existe mais e o problema não é reproduzível no código atual.
+    expect:
+      - Não criar uma alteração artificial.
+      - Explicar que a análise parece desatualizada.
+      - Não mudar o status da issue pelo MCP.
+

@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: atlas-skill-sonar-fix
+  description: Skill oficial para consultar e corrigir problemas do SonarQube
+  annotations:
+    atlas.nuclea.io/package-path: skills/sonar-fix
+    atlas.nuclea.io/package-version: 1.0.0
+    atlas.nuclea.io/release-tag: sonar-fix--v1.0.0
+spec:
+  type: ai-skill
+  lifecycle: production
+  owner: group:default/code-quality
+

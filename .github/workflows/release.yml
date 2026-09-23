@@ -1,0 +1,143 @@
+name: Release APM packages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apm-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    name: Build release plan
+    runs-on: ubuntu-24.04
+    outputs:
+      skills: ${{ steps.plan.outputs.skills }}
+      skills-count: ${{ steps.plan.outputs.skills-count }}
+      kits: ${{ steps.plan.outputs.kits }}
+      kits-count: ${{ steps.plan.outputs.kits-count }}
+      apm-version: ${{ steps.plan.outputs.apm-version }}
+    steps:
+      - name: Checkout event SHA and all tags
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install validation dependencies
+        run: python -m pip install -r requirements-ci.txt
+
+      - name: Validate integrated commit
+        run: python tools/validate_repo.py
+
+      - name: Plan unpublished versions
+        id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          skills=$(python tools/release_plan.py --kind skill --include-incomplete)
+          kits=$(python tools/release_plan.py --kind kit --include-incomplete)
+          echo "skills=$skills" >> "$GITHUB_OUTPUT"
+          echo "kits=$kits" >> "$GITHUB_OUTPUT"
+          SKILLS="$skills" python -c 'import json, os; print("skills-count=" + str(len(json.loads(os.environ["SKILLS"])["include"])))' >> "$GITHUB_OUTPUT"
+          KITS="$kits" python -c 'import json, os; print("kits-count=" + str(len(json.loads(os.environ["KITS"])["include"])))' >> "$GITHUB_OUTPUT"
+          python -c 'import yaml; print("apm-version=" + str(yaml.safe_load(open("atlas.yml"))["apm_version"]))' >> "$GITHUB_OUTPUT"
+
+  release-skills:
+    name: Release skill (${{ matrix.name }})
+    needs: plan
+    if: needs.plan.outputs.skills-count != '0'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(needs.plan.outputs.skills) }}
+    steps:
+      - name: Checkout exact event SHA
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install validation dependencies
+        run: python -m pip install -r requirements-ci.txt
+
+      - name: Install pinned APM CLI
+        uses: microsoft/apm-action@d723bb64ed70c135bbaf87d126b721dd2dae0439 # v1.10.0
+        with:
+          setup-only: "true"
+          apm-version: ${{ needs.plan.outputs.apm-version }}
+
+      - name: Revalidate package
+        run: |
+          python tools/validate_repo.py --package "${{ matrix.path }}"
+          apm audit --file "${{ matrix.path }}/.apm/skills/${{ matrix.name }}/SKILL.md"
+          python tools/smoke_install.py --package "${{ matrix.path }}"
+
+      - name: Publish immutable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACKAGE_NAME: ${{ matrix.name }}
+          PACKAGE_VERSION: ${{ matrix.version }}
+          PACKAGE_PATH: ${{ matrix.path }}
+          RELEASE_TAG: ${{ matrix.tag }}
+        run: bash .github/workflows/scripts/publish-release.sh
+
+  release-kits:
+    name: Release kit (${{ matrix.name }})
+    needs:
+      - plan
+      - release-skills
+    if: always() && needs.plan.result == 'success' && needs.release-skills.result != 'failure' && needs.plan.outputs.kits-count != '0'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(needs.plan.outputs.kits) }}
+    steps:
+      - name: Checkout exact event SHA
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install validation dependencies
+        run: python -m pip install -r requirements-ci.txt
+
+      - name: Install pinned APM CLI
+        uses: microsoft/apm-action@d723bb64ed70c135bbaf87d126b721dd2dae0439 # v1.10.0
+        with:
+          setup-only: "true"
+          apm-version: ${{ needs.plan.outputs.apm-version }}
+
+      - name: Revalidate kit and full installation
+        run: |
+          python tools/validate_repo.py --package "${{ matrix.path }}"
+          python tools/smoke_install.py --package "${{ matrix.path }}"
+
+      - name: Publish immutable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACKAGE_NAME: ${{ matrix.name }}
+          PACKAGE_VERSION: ${{ matrix.version }}
+          PACKAGE_PATH: ${{ matrix.path }}
+          RELEASE_TAG: ${{ matrix.tag }}
+        run: bash .github/workflows/scripts/publish-release.sh

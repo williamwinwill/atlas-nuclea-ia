@@ -1,0 +1,11 @@
+cases:
+  - name: detecta-pr-target-inseguro
+    input: Workflow pull_request_target faz checkout do SHA do fork e executa script com secret de escrita.
+    expect:
+      - Explicar como código não confiável alcança o secret.
+      - Propor separação entre validação sem privilégio e etapa aprovada.
+  - name: nao-confunde-estilo-com-risco
+    input: Workflow funcional apenas usa ordem diferente para chaves YAML sem mudar semântica.
+    expect:
+      - Não registrar vulnerabilidade inexistente.
+

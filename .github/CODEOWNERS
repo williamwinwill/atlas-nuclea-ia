@@ -1,0 +1,9 @@
+/.github/ @nuclea/platform-ai
+/tools/ @nuclea/platform-ai
+/policies/ @nuclea/platform-ai
+/atlas.yml @nuclea/platform-ai
+/skills/terraform-review/ @nuclea/platform-ai @nuclea/devops
+/skills/sonar-fix/ @nuclea/platform-ai @nuclea/code-quality
+/skills/pipeline-review/ @nuclea/platform-ai @nuclea/devops
+/kits/ @nuclea/platform-ai
+

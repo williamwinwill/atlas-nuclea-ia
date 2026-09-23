@@ -1,0 +1,11 @@
+name: terraform-review
+version: 1.0.0
+description: Revisa mudanças Terraform conforme segurança, confiabilidade e padrões da Núclea
+author: Núclea Platform AI
+license: UNLICENSED
+type: skill
+targets:
+  - kiro
+includes:
+  - .apm/skills/terraform-review/
+
