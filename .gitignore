@@ -1,0 +1,25 @@
+apm_modules/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+dist/
+build/
+*.zip
+*.tar.gz
+.env
+.env.*
+!.env.example
+work/
+
+# Local AI-assistant instructions and state
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.agents/
+.chatgpt/
+.codex/
+.claude/
+.cursor/
+.windsurf/
