@@ -47,6 +47,21 @@ apm audit --file skills/terraform-review/.apm/skills/terraform-review/SKILL.md
 python tools/smoke_install.py --package skills/terraform-review
 ```
 
+## Executar o Gerenciador de APMs
+
+O gerenciador web permite consultar, criar e editar os APMs do repositório. Na raiz do projeto, prepare o ambiente e inicie o servidor:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+python apps/apm-manager/server.py --port 4174
+```
+
+Abra [http://127.0.0.1:4174](http://127.0.0.1:4174) no navegador. Não abra o `index.html` diretamente: a interface usa a API local para carregar e salvar os APMs.
+
+O botão **Salvar** altera os arquivos do pacote, valida o repositório, cria um commit e tenta enviá-lo ao remoto configurado. Use `Ctrl+C` no terminal para encerrar o servidor.
+
 ## Instalar todas as skills
 
 Em um projeto consumidor, o Atlas deve gerar uma dependência para o kit completo. Para exploração manual:
