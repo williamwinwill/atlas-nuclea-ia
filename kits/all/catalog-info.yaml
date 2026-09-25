@@ -5,7 +5,7 @@ metadata:
   description: Kit completo de skills oficiais do Atlas
   annotations:
     atlas.nuclea.io/package-path: kits/all
-    atlas.nuclea.io/package-version: 1.0.0
+    atlas.nuclea.io/package-version: 1.1.0
     atlas.nuclea.io/requested-by: Núclea Platform AI
     atlas.nuclea.io/last-modified-by: Núclea Platform AI
     atlas.nuclea.io/classification: official

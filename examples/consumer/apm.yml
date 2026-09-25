@@ -12,7 +12,7 @@ dependencies:
   apm:
     - git: https://github.com/nuclea/atlas-nuclea-ia.git
       path: kits/all
-      ref: atlas-all--v1.0.0
+      ref: atlas-all--v1.1.0
 
   mcp:
     - name: atlas-sonarqube

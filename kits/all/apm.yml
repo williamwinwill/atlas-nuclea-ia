@@ -1,5 +1,5 @@
 name: atlas-all
-version: 1.0.0
+version: 1.1.0
 description: Kit completo de skills oficiais do Atlas
 author: Núclea Platform AI
 license: UNLICENSED
@@ -11,10 +11,10 @@ dependencies:
   apm:
     - git: https://github.com/nuclea/atlas-nuclea-ia.git
       path: skills/pipeline-review
-      ref: pipeline-review--v1.0.0
+      ref: pipeline-review--v1.1.0
     - git: https://github.com/nuclea/atlas-nuclea-ia.git
       path: skills/sonar-fix
-      ref: sonar-fix--v1.0.0
+      ref: sonar-fix--v1.1.0
     - git: https://github.com/nuclea/atlas-nuclea-ia.git
       path: skills/terraform-review
-      ref: terraform-review--v1.0.0
+      ref: terraform-review--v1.1.0

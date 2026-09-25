@@ -37,9 +37,9 @@ Tags Git apontam para o commit inteiro. A identidade da release resulta de `tag 
 
 | Pacote | Versão | Tag |
 |---|---:|---|
-| terraform-review | 1.0.0 | `terraform-review--v1.0.0` |
-| sonar-fix | 1.0.0 | `sonar-fix--v1.0.0` |
-| atlas-all | 1.0.0 | `atlas-all--v1.0.0` |
+| terraform-review | 1.1.0 | `terraform-review--v1.1.0` |
+| sonar-fix | 1.1.0 | `sonar-fix--v1.1.0` |
+| atlas-all | 1.1.0 | `atlas-all--v1.1.0` |
 
 A tag publicada nunca é movida. O consumidor corporativo usa o caminho do pacote e o SHA completo aprovado. A tag continua como identidade humana no catálogo e nos metadados de release.
 
@@ -57,4 +57,3 @@ O recurso “Sonar: consultar e corrigir problemas” tem quatro partes:
 `SONARQUBE_READ_ONLY=true` impede que o MCP mude o estado no Sonar. Isso não impede que o Kiro corrija o código local. A credencial é um user token fornecido no ambiente e nunca entra no Git.
 
 MCPs transitivos não são ativados implicitamente. O Atlas inclui `dependencies.mcp` diretamente no manifesto raiz do consumidor, onde a alteração pode ser revisada.
-

@@ -52,7 +52,7 @@ python tools/smoke_install.py --package skills/terraform-review
 Em um projeto consumidor, o Atlas deve gerar uma dependência para o kit completo. Para exploração manual:
 
 ```bash
-apm install nuclea/atlas-nuclea-ia/kits/all#atlas-all--v1.0.0 --target kiro
+apm install nuclea/atlas-nuclea-ia/kits/all#atlas-all--v1.1.0 --target kiro
 ```
 
 Em produção, o PR gerado pelo Atlas deve preferir o SHA completo da release aprovada. O `apm.lock.yaml` e os arquivos gerados devem ser versionados; `apm_modules/` deve permanecer ignorado.

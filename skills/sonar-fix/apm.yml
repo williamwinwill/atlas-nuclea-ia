@@ -1,5 +1,5 @@
 name: sonar-fix
-version: 1.0.0
+version: 1.1.0
 description: Investiga issues do SonarQube e conduz correções locais pequenas e verificáveis
 author: Núclea Platform AI
 license: UNLICENSED
