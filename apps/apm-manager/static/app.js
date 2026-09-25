@@ -2,7 +2,7 @@ const DEMO_CATALOG = {
   mode: "demo",
   repositoryReady: false,
   defaultTarget: "kiro",
-  supportedTargets: ["kiro", "github-copilot"],
+  supportedTargets: ["kiro", "copilot"],
   currentUser: "William Fernandes",
   repositoryUrl: "https://github.com/nuclea/atlas-nuclea-ia",
   apms: [
@@ -220,14 +220,14 @@ const DEMO_CATALOG = {
 
 const TARGETS = {
   kiro: "Kiro",
-  "github-copilot": "GitHub Copilot",
+  copilot: "GitHub Copilot",
 };
 
 DEMO_CATALOG.skills.forEach((skill) => {
-  skill.targets = ["kiro", "github-copilot"];
+  skill.targets = ["kiro", "copilot"];
 });
 DEMO_CATALOG.apms.forEach((apm, index) => {
-  apm.targets = index % 3 === 0 ? ["kiro", "github-copilot"] : ["kiro"];
+  apm.targets = index % 3 === 0 ? ["kiro", "copilot"] : ["kiro"];
 });
 
 const accents = ["#b7ef43", "#54d5ff", "#a691ff", "#ffae66", "#66e0bd", "#ff8bb4"];

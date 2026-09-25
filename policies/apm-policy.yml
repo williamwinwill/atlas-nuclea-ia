@@ -29,7 +29,7 @@ compilation:
   target:
     allow:
       - kiro
-      - github-copilot
+      - copilot
 
 security:
   audit:

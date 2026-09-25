@@ -45,7 +45,7 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertEqual(config["repository"], "https://github.com/nuclea/atlas-nuclea-ia.git")
         self.assertEqual(str(config["apm_version"]), "0.31.0")
         self.assertEqual(config["default_target"], "kiro")
-        self.assertEqual(set(config["supported_targets"]), {"kiro", "github-copilot"})
+        self.assertEqual(set(config["supported_targets"]), {"kiro", "copilot"})
         self.assertNotIn("ORG", config["repository"])
 
     def test_kit_targets_are_supported_by_every_dependency(self) -> None:

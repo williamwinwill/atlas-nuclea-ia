@@ -6,6 +6,6 @@ license: UNLICENSED
 type: skill
 targets:
   - kiro
-  - github-copilot
+  - copilot
 includes:
   - .apm/skills/sonar-fix/
