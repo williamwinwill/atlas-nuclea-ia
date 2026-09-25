@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: atlas-apm-all
+  description: Kit completo de skills oficiais do Atlas
+  annotations:
+    atlas.nuclea.io/package-path: kits/all
+    atlas.nuclea.io/package-version: 1.0.0
+    atlas.nuclea.io/requested-by: Núclea Platform AI
+    atlas.nuclea.io/last-modified-by: Núclea Platform AI
+    atlas.nuclea.io/classification: official
+    atlas.nuclea.io/apm-type: squad
+    atlas.nuclea.io/apm-segment: Atlas
+spec:
+  type: ai-apm
+  lifecycle: production
+  owner: group:default/platform-ai

@@ -3,6 +3,7 @@ version: 1.0.0
 description: Exemplo de consumo do kit Atlas no Kiro com SonarQube MCP
 targets:
   - kiro
+  - github-copilot
 
 policy:
   fetch_failure_default: block
@@ -40,4 +41,3 @@ dependencies:
         SONARQUBE_PROJECT_KEY: "${SONARQUBE_PROJECT_KEY}"
         SONARQUBE_READ_ONLY: "true"
         SONARQUBE_TOOLSETS: "issues,rules,quality-gates,measures"
-

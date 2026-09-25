@@ -5,6 +5,7 @@ author: Núclea Platform AI
 license: UNLICENSED
 targets:
   - kiro
+  - github-copilot
 
 dependencies:
   apm:
@@ -17,4 +18,3 @@ dependencies:
     - git: https://github.com/nuclea/atlas-nuclea-ia.git
       path: skills/terraform-review
       ref: terraform-review--v1.0.0
-

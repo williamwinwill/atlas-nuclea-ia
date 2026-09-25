@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Catálogo de APMs do Atlas para composição de pacotes de skills."
+    />
+    <title>Atlas — Gerenciador de APMs</title>
+    <link rel="stylesheet" href="./styles.css?v=5" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegação principal">
+        <a class="brand" href="#" aria-label="Núclea Atlas">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span class="brand-copy">
+            <strong>NÚCLEA</strong>
+            <small>ATLAS</small>
+          </span>
+        </a>
+
+        <nav class="nav-list">
+          <a class="nav-item" href="#">
+            <span class="nav-icon" aria-hidden="true">⌂</span>
+            Home
+          </a>
+          <a class="nav-item" href="#">
+            <span class="nav-icon" aria-hidden="true">◇</span>
+            Catálogo
+          </a>
+          <a class="nav-item" href="#">
+            <span class="nav-icon" aria-hidden="true">◎</span>
+            Skills
+          </a>
+          <a class="nav-item active" href="#" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">⬡</span>
+            APMs
+            <span class="nav-indicator" aria-hidden="true"></span>
+          </a>
+          <a class="nav-item" href="#">
+            <span class="nav-icon" aria-hidden="true">⌘</span>
+            MCPs
+            <span class="soon-badge">em breve</span>
+          </a>
+          <a class="nav-item" href="#">
+            <span class="nav-icon" aria-hidden="true">✦</span>
+            Agentes
+            <span class="soon-badge">em breve</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="environment-chip">
+            <span class="status-dot"></span>
+            Ambiente dev
+          </div>
+          <p>Atlas IDP · Catálogo de IA</p>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">CATÁLOGO DE IA</p>
+            <div class="title-row">
+              <h1>APMs</h1>
+              <span class="page-count" id="page-count">— pacotes</span>
+            </div>
+            <p class="page-description">
+              Combine skills oficiais em pacotes versionados, prontos para instalar e reutilizar.
+            </p>
+          </div>
+          <div class="user-chip" aria-label="Usuário atual">
+            <span class="user-avatar">WF</span>
+            <span>
+              <strong id="current-user">William Fernandes</strong>
+              <small>Platform AI</small>
+            </span>
+          </div>
+        </header>
+
+        <section class="catalog-panel" aria-labelledby="catalog-title">
+          <h2 class="sr-only" id="catalog-title">Catálogo de APMs</h2>
+          <div class="toolbar">
+            <div class="filter-group" role="group" aria-label="Filtrar APMs">
+              <button class="filter-chip active" type="button" data-filter="all">Todos</button>
+              <button class="filter-chip" type="button" data-filter="squad">Squads</button>
+              <button class="filter-chip" type="button" data-filter="front">Frentes</button>
+            </div>
+
+            <label class="global-search">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <span class="sr-only">Buscar APM</span>
+              <input id="catalog-search" type="search" placeholder="Buscar por nome ou descrição" />
+              <kbd>⌘ K</kbd>
+            </label>
+
+            <div class="toolbar-actions">
+              <button class="button button-ghost" id="refresh-button" type="button">
+                <span aria-hidden="true">↻</span>
+                Atualizar
+              </button>
+              <button class="button button-primary" id="create-button" type="button">
+                <span aria-hidden="true">＋</span>
+                Criar APM
+              </button>
+            </div>
+          </div>
+
+          <div class="catalog-summary">
+            <p><strong id="result-count">0</strong> resultados</p>
+            <button class="sync-state" id="sync-status" type="button" data-state="synced">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span id="sync-copy">Sincronizado com o repositório</span>
+            </button>
+          </div>
+
+          <div class="card-grid" id="card-grid" aria-live="polite"></div>
+
+          <div class="empty-state" id="empty-state" hidden>
+            <span class="empty-icon" aria-hidden="true">⌕</span>
+            <h3>Nenhum APM encontrado</h3>
+            <p>Tente outro termo ou crie um novo pacote.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="apm-dialog" id="apm-dialog" aria-labelledby="dialog-title">
+      <form class="dialog-frame" id="apm-form" method="dialog">
+        <header class="dialog-header">
+          <div class="dialog-title-group">
+            <span class="dialog-icon" aria-hidden="true">⬡</span>
+            <div>
+              <p class="eyebrow" id="dialog-kicker">DETALHE DO APM</p>
+              <h2 id="dialog-title">Atlas All</h2>
+            </div>
+          </div>
+          <button class="icon-button" id="close-dialog" type="button" aria-label="Fechar">×</button>
+        </header>
+
+        <div class="dialog-body">
+          <section class="apm-overview" aria-label="Informações do APM">
+            <div class="field-grid create-fields" id="create-fields" hidden>
+              <label class="field field-name">
+                <span>Nome do APM</span>
+                <input
+                  id="apm-name"
+                  name="name"
+                  required
+                  maxlength="48"
+                  pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
+                  placeholder="ex.: jornada-backend"
+                  autocomplete="off"
+                />
+                <small>Usado em <code>kits/&lt;nome&gt;</code>. Letras minúsculas, números e hífens.</small>
+              </label>
+              <label class="field field-type">
+                <span>Tipo de APM</span>
+                <select id="apm-type" name="apmType" required>
+                  <option value="">Selecione</option>
+                  <option value="squad">Squad</option>
+                  <option value="front">Frente</option>
+                </select>
+                <small>Define como o pacote será agrupado no catálogo.</small>
+              </label>
+              <label class="field field-segment">
+                <span id="segment-label">Squad ou frente</span>
+                <input
+                  id="apm-segment"
+                  name="segment"
+                  required
+                  minlength="2"
+                  maxlength="60"
+                  list="segment-suggestions"
+                  placeholder="Escolha primeiro o tipo"
+                  autocomplete="off"
+                  disabled
+                />
+                <datalist id="segment-suggestions"></datalist>
+                <small id="segment-help">Informe livremente o contexto de uso do APM.</small>
+              </label>
+              <label class="field field-wide">
+                <span>Descrição</span>
+                <input
+                  id="apm-description"
+                  name="description"
+                  required
+                  maxlength="160"
+                  placeholder="Explique quando este pacote deve ser utilizado"
+                />
+              </label>
+              <fieldset class="target-selector" id="target-selector">
+                <legend>Targets compatíveis</legend>
+                <p>Kiro vem selecionado por padrão. Escolha onde este APM poderá ser instalado.</p>
+                <div class="target-options">
+                  <label class="target-option">
+                    <input type="checkbox" name="targets" value="kiro" checked />
+                    <span class="target-check" aria-hidden="true">✓</span>
+                    <span>
+                      <strong>Kiro</strong>
+                      <small>Padrão corporativo</small>
+                    </span>
+                  </label>
+                  <label class="target-option">
+                    <input type="checkbox" name="targets" value="github-copilot" />
+                    <span class="target-check" aria-hidden="true">✓</span>
+                    <span>
+                      <strong>GitHub Copilot</strong>
+                      <small>Agentes e coding agent</small>
+                    </span>
+                  </label>
+                </div>
+              </fieldset>
+              <div class="form-requirements" id="form-requirements" aria-live="polite">
+                <span class="requirement" data-requirement="name">Nome válido</span>
+                <span class="requirement" data-requirement="description">Descrição</span>
+                <span class="requirement" data-requirement="type">Tipo</span>
+                <span class="requirement" data-requirement="segment">Squad ou frente</span>
+                <span class="requirement" data-requirement="targets">Ao menos um target</span>
+                <span class="requirement" data-requirement="skills">Ao menos uma skill</span>
+                <span class="requirement" data-requirement="compatibility">Skills compatíveis</span>
+              </div>
+            </div>
+
+            <div class="detail-grid" id="detail-grid">
+              <article class="detail-item">
+                <span class="detail-label">Última alteração</span>
+                <strong id="detail-author">—</strong>
+                <small id="detail-date">—</small>
+              </article>
+              <article class="detail-item">
+                <span class="detail-label">Versão</span>
+                <strong id="detail-version">—</strong>
+                <small>Incremento automático ao salvar</small>
+              </article>
+              <article class="detail-item detail-command">
+                <div class="detail-label-row">
+                  <span class="detail-label">Instalar na máquina</span>
+                  <label class="command-target">
+                    <span class="sr-only">Target do comando</span>
+                    <select id="detail-target" aria-label="Target do comando"></select>
+                  </label>
+                </div>
+                <div class="command-row">
+                  <code id="detail-command">—</code>
+                  <button class="copy-button" id="copy-command" type="button" aria-label="Copiar comando">
+                    Copiar
+                  </button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="composer" aria-labelledby="composer-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">COMPOSIÇÃO DO PACOTE</p>
+                <h3 id="composer-title">Skills do APM</h3>
+              </div>
+              <p>Adicione ou remova skills. A busca funciona de forma independente em cada lista.</p>
+            </div>
+
+            <div class="dual-listbox">
+              <section class="list-panel" aria-labelledby="available-title">
+                <header class="list-header">
+                  <div>
+                    <h4 id="available-title">Disponíveis</h4>
+                    <span id="available-count">0 skills</span>
+                  </div>
+                  <button class="text-button" id="add-all" type="button">Adicionar todas</button>
+                </header>
+                <label class="list-search">
+                  <span aria-hidden="true">⌕</span>
+                  <span class="sr-only">Buscar skills disponíveis</span>
+                  <input id="available-search" type="search" placeholder="Buscar disponíveis" />
+                </label>
+                <div class="skill-list" id="available-list" role="listbox" aria-multiselectable="true"></div>
+              </section>
+
+              <div class="transfer-actions" aria-label="Mover skills entre as listas">
+                <button class="transfer-button" id="add-selected" type="button" aria-label="Adicionar selecionadas">
+                  <span aria-hidden="true">→</span>
+                </button>
+                <button class="transfer-button" id="remove-selected" type="button" aria-label="Remover selecionadas">
+                  <span aria-hidden="true">←</span>
+                </button>
+              </div>
+
+              <section class="list-panel selected-panel" aria-labelledby="selected-title">
+                <header class="list-header">
+                  <div>
+                    <h4 id="selected-title">Adicionadas</h4>
+                    <span id="selected-count">0 skills</span>
+                  </div>
+                  <button class="text-button danger" id="remove-all" type="button">Remover todas</button>
+                </header>
+                <label class="list-search">
+                  <span aria-hidden="true">⌕</span>
+                  <span class="sr-only">Buscar skills adicionadas</span>
+                  <input id="selected-search" type="search" placeholder="Buscar adicionadas" />
+                </label>
+                <div class="skill-list" id="selected-list" role="listbox" aria-multiselectable="true"></div>
+              </section>
+            </div>
+          </section>
+        </div>
+
+        <div class="save-error" id="save-error" role="alert" tabindex="-1" hidden>
+          <span class="save-error-icon" aria-hidden="true">!</span>
+          <span id="save-error-copy">Não foi possível salvar o APM.</span>
+        </div>
+
+        <footer class="dialog-footer">
+          <div class="change-indicator" id="change-indicator">
+            <span class="change-dot"></span>
+            <span id="change-copy">Nenhuma alteração pendente</span>
+          </div>
+          <div class="dialog-actions">
+            <button class="button button-ghost" id="cancel-button" type="button">Cancelar</button>
+            <button class="button button-primary save-button" id="save-button" type="submit" disabled>
+              <span class="button-label">Salvar APM</span>
+              <span class="button-loading" aria-hidden="true"></span>
+            </button>
+          </div>
+        </footer>
+      </form>
+    </dialog>
+
+    <div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
+
+    <script src="./app.js?v=5" type="module"></script>
+  </body>
+</html>

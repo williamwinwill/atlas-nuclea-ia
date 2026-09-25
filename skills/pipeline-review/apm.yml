@@ -6,6 +6,6 @@ license: UNLICENSED
 type: skill
 targets:
   - kiro
+  - github-copilot
 includes:
   - .apm/skills/pipeline-review/
-

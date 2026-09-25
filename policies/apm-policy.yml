@@ -29,6 +29,7 @@ compilation:
   target:
     allow:
       - kiro
+      - github-copilot
 
 security:
   audit:
@@ -36,4 +37,3 @@ security:
     fail_on_drift: true
   integrity:
     require_hashes: true
-
