@@ -1,5 +1,7 @@
 # Processo de release
 
+O estado operacional das versões publicadas fica registrado em [Controle de release](release-control.md).
+
 ## Pull request
 
 `validate.yml` calcula os pacotes afetados. Uma mudança em `tools/`, policy, configuração ou workflows revalida todos os pacotes.
