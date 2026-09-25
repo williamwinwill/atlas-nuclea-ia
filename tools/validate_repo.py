@@ -48,8 +48,13 @@ def validate_common(package: Any, errors: list[str]) -> None:
     if not str(manifest.get("description", "")).strip():
         error(errors, package.path / "apm.yml", "description é obrigatória")
     targets = manifest.get("targets")
-    if targets != [load_config()["default_target"]]:
-        error(errors, package.path / "apm.yml", "targets deve fixar somente o target corporativo")
+    supported_targets = set(load_config().get("supported_targets", [load_config()["default_target"]]))
+    if not isinstance(targets, list) or not targets:
+        error(errors, package.path / "apm.yml", "targets deve declarar ao menos um target")
+    elif len(targets) != len(set(targets)):
+        error(errors, package.path / "apm.yml", "targets não pode conter valores duplicados")
+    elif unknown_targets := sorted(set(targets) - supported_targets):
+        error(errors, package.path / "apm.yml", f"targets não suportados: {', '.join(unknown_targets)}")
     changelog = package.path / "CHANGELOG.md"
     if not changelog.exists() or f"## [{package.version}]" not in changelog.read_text(encoding="utf-8"):
         error(errors, changelog, f"deve conter uma entrada para {package.version}")
@@ -125,6 +130,13 @@ def validate_kit(package: Any, packages_by_path: dict[str, Any], errors: list[st
         if not target or target.kind != "skill":
             error(errors, package.path / "apm.yml", f"path de skill desconhecido: {dep_path}")
             continue
+        missing_targets = sorted(set(package.manifest.get("targets", [])) - set(target.manifest.get("targets", [])))
+        if missing_targets:
+            error(
+                errors,
+                package.path / "apm.yml",
+                f"{dep_path} não suporta os targets do kit: {', '.join(missing_targets)}",
+            )
         ref = str(dependency.get("ref", ""))
         expected_prefix = f"{target.name}--v"
         if not (SHA_RE.fullmatch(ref) or ref.startswith(expected_prefix)):

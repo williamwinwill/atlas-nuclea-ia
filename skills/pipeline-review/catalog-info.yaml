@@ -5,10 +5,9 @@ metadata:
   description: Skill oficial para revisão de pipelines CI/CD
   annotations:
     atlas.nuclea.io/package-path: skills/pipeline-review
-    atlas.nuclea.io/package-version: 1.0.0
-    atlas.nuclea.io/release-tag: pipeline-review--v1.0.0
+    atlas.nuclea.io/package-version: 1.1.0
+    atlas.nuclea.io/release-tag: pipeline-review--v1.1.0
 spec:
   type: ai-skill
   lifecycle: production
   owner: group:default/platform-ai
-

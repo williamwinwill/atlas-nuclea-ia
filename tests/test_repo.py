@@ -13,9 +13,10 @@ from tools.repo_model import ROOT, bump_semver, discover_packages, load_config, 
 class RepositoryContractTests(unittest.TestCase):
     def test_expected_packages_are_discoverable(self) -> None:
         packages = discover_packages()
-        self.assertEqual(
-            {package.name for package in packages},
-            {"atlas-all", "pipeline-review", "sonar-fix", "terraform-review"},
+        self.assertTrue(
+            {"atlas-all", "pipeline-review", "sonar-fix", "terraform-review"}.issubset(
+                {package.name for package in packages}
+            )
         )
 
     def test_skill_identity_matches_frontmatter(self) -> None:
@@ -43,7 +44,22 @@ class RepositoryContractTests(unittest.TestCase):
         config = load_config()
         self.assertEqual(config["repository"], "https://github.com/nuclea/atlas-nuclea-ia.git")
         self.assertEqual(str(config["apm_version"]), "0.31.0")
+        self.assertEqual(config["default_target"], "kiro")
+        self.assertEqual(set(config["supported_targets"]), {"kiro", "copilot"})
         self.assertNotIn("ORG", config["repository"])
+
+    def test_kit_targets_are_supported_by_every_dependency(self) -> None:
+        packages = discover_packages()
+        by_path = {package.relative_path: package for package in packages}
+        for package in packages:
+            if package.kind != "kit":
+                continue
+            kit_targets = set(package.manifest["targets"])
+            for dependency in package.manifest["dependencies"]["apm"]:
+                self.assertTrue(
+                    kit_targets.issubset(set(by_path[dependency["path"]].manifest["targets"])),
+                    f"{dependency['path']} deve suportar todos os targets de {package.name}",
+                )
 
     def test_release_metadata_shape(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

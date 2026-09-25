@@ -1,6 +1,9 @@
 repository: https://github.com/nuclea/atlas-nuclea-ia.git
 default_branch: main
 default_target: kiro
+supported_targets:
+  - kiro
+  - copilot
 apm_version: 0.31.0
 tag_format: "{name}--v{version}"
 owners:
