@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: atlas-apm-atlas
+  description: Pacote de skills para a jornada de pagamentos
+  annotations:
+    atlas.nuclea.io/package-path: kits/atlas
+    atlas.nuclea.io/package-version: 1.0.0
+    atlas.nuclea.io/requested-by: William Fernandes
+    atlas.nuclea.io/last-modified-by: William Fernandes
+    atlas.nuclea.io/classification: custom
+    atlas.nuclea.io/apm-type: squad
+    atlas.nuclea.io/apm-segment: Atlas
+spec:
+  type: ai-apm
+  lifecycle: production
+  owner: group:default/platform-ai

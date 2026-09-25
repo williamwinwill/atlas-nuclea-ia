@@ -1,0 +1,12 @@
+name: atlas
+version: 1.0.0
+description: Pacote de skills para a jornada de pagamentos
+author: William Fernandes
+license: UNLICENSED
+targets:
+- kiro
+dependencies:
+  apm:
+  - git: https://github.com/nuclea/atlas-nuclea-ia.git
+    path: skills/pipeline-review
+    ref: pipeline-review--v1.1.0
